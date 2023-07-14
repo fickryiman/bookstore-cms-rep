@@ -7,14 +7,6 @@ const Input = () => {
     category: '',
   });
 
-  // const authors = ['Fickry Bil Iman', 'Suzanne Collins', 'Frank Herbert'];
-
-  // const authorOptions = authors.map((author) => (
-  //   <option value={author} key={author.id}>
-  //     {author}
-  //   </option>
-  // ));
-
   const handleChange = (e) => {
     setState({
       ...state,
@@ -44,7 +36,6 @@ const Input = () => {
           <option value="Fickry Bil Iman">Fickry Bil Iman</option>
           <option value="Suzanne Collins">Suzanne Collins</option>
           <option value="Frank Herbert">Frank Herbert</option>
-          {/* {authorOptions} */}
         </select>
         <button
           type="submit"
