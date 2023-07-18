@@ -1,10 +1,9 @@
 import styles from '../styles/Categories.module.css';
+import styles2 from '../styles/Input.module.css';
 
 const Categories = () => (
   <div className={styles.container}>
-    <p className={styles.category}>Action</p>
-    <p className={styles.category}>Science Fiction</p>
-    <p className={styles.category}>Economy</p>
+    <button type="button" className={styles2.checkStatus}>Check status</button>
   </div>
 );
 
