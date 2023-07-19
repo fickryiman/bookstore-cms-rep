@@ -1,31 +1,32 @@
-import { createSlice } from '@reduxjs/toolkit';
+import bookItems from '../../bookItems';
 
-const initialState = {
-  bookItems: [],
-};
+const ADD_BOOK = 'bookstore/books/ADD_BOOK';
+const REMOVE_BOOK = 'bookstore/books/REMOVE_BOOK';
 
-const bookSlice = createSlice({
-  name: 'book',
-  initialState,
-  reducers: {
-    addBook: (state, action) => {
-      // const bookId = action.payload;
-      // state.bookItems.push(bookId);
-      state.books = [
-        ...state.books, {
-          id: Math.floor(Math.random() * 100),
-          title: action.payload.title,
-          author: action.payload.author,
-        },
-      ];
-    },
-    removeBook: (state, action) => {
-      const bookId = action.payload;
-      state.bookItems = state.bookItems.filter((book) => book.id !== bookId);
-    },
-  },
+// const initialState = [];
+const initialState = bookItems;
+
+export const addBook = (payload) => ({
+  type: ADD_BOOK,
+  payload,
 });
 
-export const { addBook, removeBook } = bookSlice.actions;
+export const removeBook = (payload) => ({
+  type: REMOVE_BOOK,
+  payload,
+});
 
-export default bookSlice.reducer;
+const booksReducer = (state = initialState, action) => {
+  const { type } = action;
+
+  switch (type) {
+    case ADD_BOOK:
+      return [...state, action.payload];
+    case REMOVE_BOOK:
+      return state.filter((book) => book.id !== action.payload);
+    default:
+      return state;
+  }
+};
+
+export default booksReducer;
