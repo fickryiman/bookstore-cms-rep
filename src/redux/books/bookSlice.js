@@ -1,32 +1,69 @@
-import bookItems from '../../bookItems';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import {
+  addBookToAPI,
+  removeBookFromAPI,
+  getBooksFromAPI,
+} from '../../API/api';
 
 const ADD_BOOK = 'bookstore/books/ADD_BOOK';
 const REMOVE_BOOK = 'bookstore/books/REMOVE_BOOK';
+const GET_BOOKS = 'bookstore/books/GET_BOOKS';
 
-// const initialState = [];
-const initialState = bookItems;
-
-export const addBook = (payload) => ({
-  type: ADD_BOOK,
-  payload,
+const addBook = createAsyncThunk(ADD_BOOK, async (input) => {
+  addBookToAPI(input);
+  return input;
 });
 
-export const removeBook = (payload) => ({
-  type: REMOVE_BOOK,
-  payload,
+const getBooks = createAsyncThunk(GET_BOOKS, async () => {
+  const result = getBooksFromAPI();
+  return result;
 });
 
-const booksReducer = (state = initialState, action) => {
-  const { type } = action;
+const removeBook = createAsyncThunk(REMOVE_BOOK, async (id) => {
+  removeBookFromAPI(id);
+  return id;
+});
 
-  switch (type) {
-    case ADD_BOOK:
-      return [...state, action.payload];
-    case REMOVE_BOOK:
-      return state.filter((book) => book.id !== action.payload);
-    default:
-      return state;
-  }
+const initialState = {
+  bookList: [],
+  status: null,
 };
 
-export default booksReducer;
+const handleBookSlice = createSlice({
+  name: 'bookSlice',
+  initialState,
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(addBook.fulfilled, (state, action) => {
+        state.bookList.push({
+          id: action.payload.item_id,
+          title: action.payload.title,
+          author: action.payload.author,
+          category: action.payload.category,
+        });
+      });
+    builder
+      .addCase(getBooks.fulfilled, (state, action) => {
+        const newBookList = [];
+        Object.entries(action.payload).forEach((item) => {
+          newBookList.push({
+            id: item[0],
+            title: item[1][0].title,
+            author: item[1][0].author,
+            category: item[1][0].category,
+          });
+        });
+        // eslint-disable-next-line no-param-reassign
+        state.bookList = newBookList;
+      });
+    builder
+      .addCase(removeBook.fulfilled, (state, action) => {
+        // eslint-disable-next-line no-param-reassign
+        state.bookList = state.bookList.filter((book) => book.id !== action.payload);
+      });
+  },
+});
+
+export default handleBookSlice.reducer;
+export { addBook, getBooks, removeBook };

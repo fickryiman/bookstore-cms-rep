@@ -1,12 +1,10 @@
 const CHECK_STATUS = 'bookstore/categories/CHECK_STATUS';
 
-const initialState = [];
-
-export const checkStatus = () => ({
+const checkStatus = () => ({
   type: CHECK_STATUS,
 });
 
-const categoriesReducer = (state = initialState, action) => {
+const categoriesReducer = (state = [], action) => {
   const { type } = action;
 
   switch (type) {
@@ -18,3 +16,4 @@ const categoriesReducer = (state = initialState, action) => {
 };
 
 export default categoriesReducer;
+export { checkStatus };
