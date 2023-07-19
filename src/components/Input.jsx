@@ -1,46 +1,53 @@
-import { useState } from 'react';
+/* eslint-disable react/prop-types */
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { v4 as uuidv4 } from 'uuid';
+import { addBook } from '../redux/books/bookSlice';
 import styles from '../styles/Input.module.css';
 
 const Input = () => {
-  const [state, setState] = useState({
-    book: '',
-    category: '',
-  });
+  const [title, setTitle] = useState('');
+  const [category, setCategory] = useState('');
 
-  const handleChange = (e) => {
-    setState({
-      ...state,
-      [e.target.value]: e.target.value,
-    });
+  const dispatch = useDispatch();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const book = {
+      id: uuidv4(),
+      title,
+      category,
+    };
+    setTitle('');
+    setCategory('');
+    dispatch(addBook(book));
   };
 
   return (
     <section>
       <h2 className={styles.formTitle}>ADD NEW BOOK</h2>
-      <form className={styles.addForm}>
+      <form className={styles.addForm} onSubmit={handleSubmit}>
         <input
-          name="book"
+          name="title"
           type="text"
           placeholder="Book Title"
+          value={title}
           className={`${styles.input} ${styles.titleInput}`}
-          onChange={handleChange}
+          onChange={(e) => setTitle(e.target.value)}
         />
         <select
-          id="category"
           name="category"
           type="text"
+          value={category}
           className={`${styles.input} ${styles.categoryInput}`}
-          onChange={handleChange}
+          onChange={(e) => setCategory(e.target.value)}
         >
           <option disabled>Author</option>
           <option value="Fickry Bil Iman">Fickry Bil Iman</option>
           <option value="Suzanne Collins">Suzanne Collins</option>
           <option value="Frank Herbert">Frank Herbert</option>
         </select>
-        <button
-          type="submit"
-          className={styles.primaryButtonBig}
-        >
+        <button type="submit" className={styles.primaryButtonBig}>
           ADD BOOK
         </button>
       </form>
