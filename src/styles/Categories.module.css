@@ -1,3 +1,9 @@
 .container {
   margin-left: 5%;
 }
+
+.message {
+  margin: 5%;
+  font-size: 50px;
+  color: rgb(243, 54, 54);
+}
