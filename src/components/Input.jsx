@@ -6,21 +6,36 @@ import { addBook } from '../redux/books/bookSlice';
 import styles from '../styles/Input.module.css';
 
 const Input = () => {
-  const [title, setTitle] = useState('');
-  const [category, setCategory] = useState('');
+  const [entry, setEntry] = useState({
+    title: '',
+    author: '',
+  });
 
   const dispatch = useDispatch();
 
+  const handleChange = (e) => {
+    const input = e.target.value;
+    switch (e.target.name) {
+      case 'title':
+        setEntry((value) => ({ ...value, title: input }));
+        break;
+      case 'author':
+        setEntry((value) => ({ ...value, author: input }));
+        break;
+      default:
+        break;
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    const book = {
-      id: uuidv4(),
-      title,
-      category,
+    const newBook = {
+      item_id: uuidv4(),
+      title: entry.title,
+      author: entry.author,
+      category: 'none',
     };
-    setTitle('');
-    setCategory('');
-    dispatch(addBook(book));
+    dispatch(addBook(newBook));
   };
 
   return (
@@ -31,22 +46,16 @@ const Input = () => {
           name="title"
           type="text"
           placeholder="Book Title"
-          value={title}
           className={`${styles.input} ${styles.titleInput}`}
-          onChange={(e) => setTitle(e.target.value)}
+          onChange={handleChange}
         />
-        <select
-          name="category"
+        <input
+          name="author"
           type="text"
-          value={category}
-          className={`${styles.input} ${styles.categoryInput}`}
-          onChange={(e) => setCategory(e.target.value)}
-        >
-          <option disabled>Author</option>
-          <option value="Fickry Bil Iman">Fickry Bil Iman</option>
-          <option value="Suzanne Collins">Suzanne Collins</option>
-          <option value="Frank Herbert">Frank Herbert</option>
-        </select>
+          placeholder="Book Author"
+          className={`${styles.input} ${styles.titleInput}`}
+          onChange={handleChange}
+        />
         <button type="submit" className={styles.primaryButtonBig}>
           ADD BOOK
         </button>

@@ -7,7 +7,7 @@ const Item = (props) => {
   const dispatch = useDispatch();
 
   const {
-    id, title, author, category, progress, chapter,
+    id, title, author, category,
   } = props;
 
   return (
@@ -41,17 +41,14 @@ const Item = (props) => {
               <div className={styles.circularProgress} />
             </div>
             <div className={styles.progressStat}>
-              <p className={styles.percentComplete}>
-                {progress}
-                %
-              </p>
+              <p className={styles.percentComplete}>64%</p>
               <p className={styles.completed}>Completed</p>
             </div>
             <div className={styles.progressDivider} />
             <div className={styles.currentChapterContainer}>
               <div>
                 <p className={styles.currentChapterLabel}>CURRENT CHAPTER</p>
-                <p className={styles.currentChapter}>{chapter}</p>
+                <p className={styles.currentChapter}>Introduction</p>
               </div>
               <div>
                 <button className={styles.primaryButton} type="button">
@@ -67,8 +64,10 @@ const Item = (props) => {
 };
 
 Item.propTypes = {
-  title: PropTypes.string,
-  category: PropTypes.string,
-}.isRequired;
+  id: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  author: PropTypes.string.isRequired,
+  category: PropTypes.string.isRequired,
+};
 
 export default Item;

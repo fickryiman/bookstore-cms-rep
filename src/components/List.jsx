@@ -1,40 +1,33 @@
-import PropTypes from 'prop-types';
-import BookstoreItem from './Item';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getBooks } from '../redux/books/bookSlice';
+import Item from './Item';
 import styles from '../styles/List.module.css';
 
-const List = (props) => {
-  const { books } = props;
+const List = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getBooks());
+  }, [dispatch]);
+
+  const books = useSelector((state) => state.bookSlice.bookList);
 
   return (
     <div>
       <ul className={styles.books}>
         {books.map((book) => (
-          <BookstoreItem
+          <Item
             key={book.id}
             id={book.id}
             title={book.title}
             author={book.author}
             category={book.category}
-            progress={book.progress}
-            chapter={book.chapter}
           />
         ))}
       </ul>
     </div>
   );
-};
-
-List.propTypes = {
-  books: PropTypes.arrayOf(
-    PropTypes.exact({
-      id: PropTypes.string,
-      title: PropTypes.string,
-      author: PropTypes.string,
-      category: PropTypes.string,
-      progress: PropTypes.string,
-      chapter: PropTypes.string,
-    }),
-  ).isRequired,
 };
 
 export default List;
