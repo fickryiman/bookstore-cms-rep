@@ -16,8 +16,8 @@ const Categories = () => {
         type="submit"
         className={`${styles.primaryButtonBig} ${styles2.checkStatus}`}
         onClick={() => {
-          setMessage(status);
           dispatch(checkStatus());
+          setMessage(status);
         }}
       >
         Check Status
